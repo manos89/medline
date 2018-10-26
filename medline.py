@@ -1,4 +1,14 @@
 import pymongo
+import unicodedata
+import string
+
+
+all_letters = string.ascii_letters +string.digits+'"'+string.ascii_uppercase+" -.,"
+n_letters = len(all_letters)
+
+# Turn a Unicode string to plain ASCII, thanks to http://stackoverflow.com/a/518232/2809427
+def unicodeToAscii(s):
+    return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn' and c in all_letters)
 
 
 def get_ids():
@@ -29,8 +39,7 @@ for r in results:
 		brief_results=db['brf_sum_text'].find_one({'patent_id':patent_id})
 		if brief_results:
 			brief_text=' '+str(brief_results['text'])
-			print(brief_text)
-		patent_id_write='PMID- '+patent_id
+		patent_id_write=unicodeToAscii('PMID- '+patent_id)
 		full_text=abstract.strip().lstrip().rstrip()+' '+brief_text.strip().lstrip().rstrip()
 		text_to_write=patent_id_write.strip().lstrip().rstrip()+'\n'+title.strip().lstrip().rstrip()+'\n'+full_text.strip()
 		text.write(text_to_write[:2500].encode('ascii')+'\n\n'.encode('ascii'))

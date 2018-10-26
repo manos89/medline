@@ -2,6 +2,13 @@ import pymongo
 import unicodedata
 import string
 
+def whatisthis(s):
+    if isinstance(s, str):
+        print("ordinary string")
+    elif isinstance(s, unicode):
+        print("unicode string")
+    else:
+        print("not a string")
 
 all_letters = string.ascii_letters +string.digits+'"'+string.ascii_uppercase+" -.,"
 n_letters = len(all_letters)
@@ -42,6 +49,7 @@ for r in results:
 		patent_id_write=unicodeToAscii('PMID- '+patent_id)
 		full_text=abstract.strip().lstrip().rstrip()+' '+brief_text.strip().lstrip().rstrip()
 		text_to_write=patent_id_write.strip().lstrip().rstrip()+'\n'+title.strip().lstrip().rstrip()+'\n'+full_text.strip()
+		text_to_write=unicodeToAscii(text_to_write)
 		text.write(text_to_write[:2500].encode('ascii')+'\n\n'.encode('ascii'))
 		count+=1
 	except Exception as E:

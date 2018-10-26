@@ -1,6 +1,14 @@
 import pymongo
 
 
+def get_ids():
+	text=open('patent_ids.txt','r')
+	ids=[int(line.strip()) for line in text]
+	text.close()
+	return ids
+
+ids=get_ids()
+
 USERNAME='manos'
 PASSWORD='11Ian19891989'
 HOST='d0002332'
@@ -10,7 +18,8 @@ count=1
 client = pymongo.MongoClient('mongodb://'+USERNAME+':'+PASSWORD+'@'+HOST+':'+PORT+'/'+MONGO_DATABASE)
 db = client['large_papers']
 text=open('Medline.txt','wb')
-results=db['patents'].find()
+results=db['patents'].find({'id':{'$in':ids}})
+
 for r in results:
 	try:
 		brief_text=''

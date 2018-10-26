@@ -53,6 +53,9 @@ for r in results:
 		text.write(text_to_write[:2500].encode('ascii')+'\n\n'.encode('ascii'))
 		count+=1
 	except Exception as E:
+		text=open('missingids.txt','a')
+		text.write(patent_id+'\n')
+		text.close()
 		print(str(E))
 
 text.close()

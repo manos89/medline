@@ -42,13 +42,13 @@ for r in results:
 		brief_text=''
 		patent_id=str(r['id'])
 		title='TI  - '+str(r['title']).strip().lstrip()
-		abstract='AB  - '+r['abstract'].strip().lstrip()
+		abstract='AB  - '+str(r['abstract']).strip().lstrip()
 		brief_results=db['brf_sum_text'].find_one({'patent_id':patent_id})
 		if brief_results:
 			brief_text=' '+str(brief_results['text'])
 		patent_id_write=unicodeToAscii('PMID- '+patent_id)
 		full_text=abstract.strip().lstrip().rstrip()+' '+brief_text.strip().lstrip().rstrip()
-		text_to_write=patent_id_write.strip().lstrip().rstrip()+'\n'+title.strip().lstrip().rstrip()+'\n'+full_text.strip()
+		text_to_write=str(patent_id_write).strip().lstrip().rstrip()+'\n'+title.strip().lstrip().rstrip()+'\n'+full_text.strip()
 		text_to_write=unicodeToAscii(text_to_write)
 		text.write(text_to_write[:2500].encode('ascii')+'\n\n'.encode('ascii'))
 		count+=1
